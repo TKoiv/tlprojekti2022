@@ -18,6 +18,10 @@ void Accelerator::makeMeasurement()
   m.y = analogRead(A2);
   m.z = analogRead(A3);
 
+  //m.x = 258*2;
+  //m.y = 259;
+  //m.z = 240;
+
 }
 Measurement Accelerator::getMeasurement()
 {
