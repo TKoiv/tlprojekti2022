@@ -4,11 +4,13 @@
 // Kiihtvyys-anturin napojen määrittely:
 const int VccPin2        = A0;  // Käyttöjännite
 const int GNDPin2        = A4;  // laitteen maa-napa
+int RotationDirection = 0;
 
 
 void setup() 
 {
   Serial.begin(9600);
+  
 
   // Kiihtvyys-anturin napojen määrittely:
   pinMode(VccPin2, OUTPUT);     // Kiihtyvyysanturin käyttöjännite Vcc
