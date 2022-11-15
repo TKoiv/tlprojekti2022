@@ -5,6 +5,7 @@
 const int VccPin2        = A0;  // Käyttöjännite
 const int GNDPin2        = A4;  // laitteen maa-napa
 int RotationDirection = 0;
+int idCounter = 0;
 
 
 void setup() 
@@ -40,7 +41,7 @@ void loop()
      6 = x-aksel down
      
   */
-
+  
   Serial.println("Give rotation of arduino");
   int RotationDirection = 0;
 
@@ -66,6 +67,7 @@ void loop()
     }
   }
 
+  int idCounter = 0;
   for(int M = 0;M<NumberOfMeasurements;M++)
   {
      Aobject.makeMeasurement();
