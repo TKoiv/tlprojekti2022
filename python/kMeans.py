@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from numpy import linalg as LA
 
 file = "putty.log"
 
@@ -35,8 +36,8 @@ distances = np.zeros(4)
 ''' i=0
 for i in len(numberOfRows):
     for x in data[i]:
-        
- '''
+       random[:0] - x ''' 
+
 
 ''' fig = plt.figure()
 ax = fig.add_subplot(projection='3d')
