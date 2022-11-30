@@ -1,12 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from numpy import linalg as LA
-from time import sleep
 
 
 def dataReading():
     file = "putty.log"
     data = np.loadtxt(file)
+    print("Data on: ", data)
 
     return data
 
@@ -38,7 +37,6 @@ def randomData():
     return random
 
 def kMeans(dataMatrix,random,numberOfRows):
-    distances = np.zeros(4)
     values = np.zeros(4)
     counts = np.zeros(4)
     averageDistance = np.zeros((4,3))
@@ -63,6 +61,30 @@ def kMeans(dataMatrix,random,numberOfRows):
             averageDistance[y] = (centerPointCumulativeSum[y] / counts[y])
 
         plotter(averageDistance,dataMatrix,numberOfRows)
+        for k in range(10):
+            iteration(averageDistance,dataMatrix,numberOfRows)
+            k += 1
+            print("iteration", k)
+        plotter(averageDistance,dataMatrix,numberOfRows)
+def iteration(averageDistance,dataMatrix,numberOfRows):
+    averageDistance = averageDistance
+    dataMatrix = dataMatrix
+    numberOfRows = numberOfRows
+    values = np.zeros(4)
+    counts = np.zeros(4)
+    centerPointCumulativeSum = np.zeros((4,3))
+    for i in range(numberOfRows):
+        for j in range(4):
+            value1 = np.abs(np.sqrt(np.power((averageDistance[j,0]-dataMatrix[i,0]),2) + np.power((averageDistance[j,1]-dataMatrix[i,1]),2) + np.power((averageDistance[j,2]-dataMatrix[i,2]),2)))
+            values[j] = value1
+        
+        index = np.argmin(values)
+        counts[index] += 1
+        centerPointCumulativeSum[index,0:3] += dataMatrix[i,0:3]
+    y = 0  
+    for y in range(4):
+        averageDistance[y] = (centerPointCumulativeSum[y] / counts[y])
+    
 
 def plotter(averageDistance,dataMatrix,numberOfRows):
     
