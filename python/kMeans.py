@@ -4,14 +4,9 @@ import pandas as pd
 
 
 def dataReading():
-    # file = "putty.log"
-    # data = np.loadtxt(file)
-    # print("Data on: ", data)
+
     file = "file.csv"
     data = pd.read_csv(file,delimiter=";")
-    # print("Data on: ", data)
-    # print(data.values[668,5])
-    
 
     return data
 
@@ -19,7 +14,6 @@ def dataProcessing(data):
 
     global randomMax 
     global randomMin
-    
 
     numberOfRows = len(data)
     numberOfRows = int(numberOfRows)
@@ -27,10 +21,6 @@ def dataProcessing(data):
     datax = data.values[0::,5]
     datay = data.values[0::,6]
     dataz = data.values[0::,7]
-
-    # datax = data[0::3]
-    # datay = data[1::3]
-    # dataz = data[2::3]
 
     dataMatrix = np.zeros((numberOfRows,3))
     dataMatrix[:,0] = datax
@@ -40,12 +30,10 @@ def dataProcessing(data):
     randomMax = np.max(data.values[0::,5:7])
     randomMin = np.min(data.values[0::,5:7])
 
-    # randomMax = int(500)
-    # randomMin = int(260)
-
     return dataMatrix,numberOfRows
 
 def randomData():
+
     random = np.random.randint(randomMin,randomMax,size=(6,3))
 
     return random
@@ -63,7 +51,7 @@ def kMeans(dataMatrix,random,numberOfRows):
         index = np.argmin(values)
         counts[index] += 1
         centerPointCumulativeSum[index,0:3] += dataMatrix[i,0:3]
-        print(counts)
+        print("Arvottu tulos:",counts)
         
     apu1 = np.min(counts)
     y = 0
@@ -76,11 +64,19 @@ def kMeans(dataMatrix,random,numberOfRows):
             averageDistance[y] = (centerPointCumulativeSum[y] / counts[y])
 
         plotter(averageDistance,dataMatrix,numberOfRows)
-        for k in range(10):
-            iteration(averageDistance,dataMatrix,numberOfRows)
-            k += 1
-            print("iteration", k)
+        iter = iteration(averageDistance,dataMatrix,numberOfRows)
+        
+        
+        while True:
+            print("Iteroitu tulos: ", iter)
+            iter2 = iter
+            iter = iteration(averageDistance,dataMatrix,numberOfRows)
+            print("Iteroitu tulos: ", iter)
+            if (iter2 == iter).all():
+                break
+
         plotter(averageDistance,dataMatrix,numberOfRows)
+
 def iteration(averageDistance,dataMatrix,numberOfRows):
     averageDistance = averageDistance
     dataMatrix = dataMatrix
@@ -96,10 +92,12 @@ def iteration(averageDistance,dataMatrix,numberOfRows):
         index = np.argmin(values)
         counts[index] += 1
         centerPointCumulativeSum[index,0:3] += dataMatrix[i,0:3]
+   
     y = 0  
     for y in range(6):
         averageDistance[y] = (centerPointCumulativeSum[y] / counts[y])
-    
+
+    return counts
 
 def plotter(averageDistance,dataMatrix,numberOfRows):
     
