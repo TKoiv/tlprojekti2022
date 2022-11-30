@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from numpy import linalg as LA
+from time import sleep
 
 
 def dataReading():
@@ -9,6 +10,11 @@ def dataReading():
     return data
 
 def dataProcessing(data):
+
+    global randomMax 
+    global randomMin
+    randomMax = np.max(data)
+    randomMin = np.min(data)
 
     numberOfRows = len(data) / 3
     numberOfRows = int(numberOfRows)
@@ -41,33 +47,16 @@ def dataProcessing(data):
     for idata in range(len(data)):
         print(data[idata+0]) '''
 
-    return dataMatrix,numberOfRows, datax,datay,dataz
+    return dataMatrix,numberOfRows
 
-def randomData(data):
-    max = np.max(data)
-    min = np.min(data)
-    random = np.random.randint(min,max,size=(4,3))
-    #print("Random arvo on",random)
-    #print("Eka arvo on: ",random[0])
-    #print("Ekan eka arvo on: ",random[0,0])
-    # print("Ekan toka arvo on: ",random[0,1])
-    # print("Ekan kolmas arvo on: ",random[0,2])
-    # xRandom = np.abs(np.sqrt(np.power(random[0,0],2)+np.power(random[1,0],2)+np.power(random[2,0],2)))
-    # yRandom = np.abs(np.sqrt(np.power(random[1,0],2)+np.power(random[1,1],2)+np.power(random[1,2],2)))
-    # zRandom = np.abs(np.sqrt(np.power(random[2,0],2)+np.power(random[2,1],2)+np.power(random[2,2],2)))
-    # print("xRandom on",xRandom)
-    # print("yRandom on",yRandom)
-    # print("zRandom on",zRandom)
+def randomData():
+    
+    random = np.random.randint(randomMin,randomMax,size=(4,3))
 
     return random
 
-    
 
-
-def kMeans(dataMatrix,random, numberOfRows,data):
-    dataMatrix = dataMatrix
-    numberOfRows = numberOfRows
-    data = data
+def kMeans(dataMatrix,random,numberOfRows):
     distances = np.zeros(4)
     values = np.zeros(4)
     counts = np.zeros(4)
@@ -84,46 +73,30 @@ def kMeans(dataMatrix,random, numberOfRows,data):
 
         #print(values)
         index = np.argmin(values)
-        print(index)
-        distances[index] = values[index]
-        distances = distances + distances 
+        #print(index)
+        # distances[index] = values[index]
+        # distances = distances + distances 
         counts[index] += 1
         centerPointCumulativeSum[index,0:3] += dataMatrix[i,0:3]
-        print("Yhteenlasketut",centerPointCumulativeSum)
+        #print("Yhteenlasketut",centerPointCumulativeSum)
         #print(distances)
         print(counts)
-        apu1 = np.min(counts)
+        
+    apu1 = np.min(counts)
+    print("apu1 on: ", apu1)
+    y = 0
 
     if apu1 == 0:
-        random = randomData(data)
-        kMeans(dataMatrix,random, numberOfRows,data)
-    else:
-        for i in range(4):
-            averageDistance[i] = (centerPointCumulativeSum[i] / counts[i])
-            print("Average",averageDistance)
-
-            #print(averageDistance[1,0])        
-    return averageDistance
+        random = randomData()
+        kMeans(dataMatrix,random,numberOfRows)
+    elif apu1 != 0:
+        for y in range(4):
+            averageDistance[y] = (centerPointCumulativeSum[y] / counts[y])
+        # print("Average for loopin jälkeen2222",averageDistance)
+        plotter2(averageDistance,dataMatrix,numberOfRows)
 
 
 
-
-
-
-
-
-
-
-    ''' yRandom = np.abs(np.sqrt(np.power(random[1,0],2)+np.power(random[1,1],2)+np.power(random[1,2],2)))
-        zRandom = np.abs(np.sqrt(np.power(random[2,0],2)+np.power(random[2,1],2)+np.power(random[2,2],2))) '''
-    
-    ''' centerPointCumulativeSum = np.zeros((numberOfRows,3))
-        print(centerPointCumulativeSum)
-        counts = np.zeros(4)
-        print(counts)
-        distances = np.zeros(4) '''
-    
-    #plotter()
     
 
 def plotter(datax,datay,dataz,averageDistance):
@@ -143,8 +116,13 @@ def plotter(datax,datay,dataz,averageDistance):
     plt.show()
 
 def plotter2(averageDistance,dataMatrix,numberOfRows):
+    
+    print("Avarage distance on ennen for looppia: ",averageDistance)
     fig = plt.figure()
     ax = fig.add_subplot(projection='3d')
+    #print("Avarage distance on ennen for looppia: ",averageDistance)
+    x = 0
+    i = 0
     for x in range(numberOfRows):
         ax.scatter(dataMatrix[x,0],dataMatrix[x,1], dataMatrix[x,2], color="blue")
     for i in range(4):
@@ -166,11 +144,12 @@ if __name__ == "__main__":
     #Main program here!
     data = dataReading()
     #print(data)
-    dataMatrix, numberOfRows, datax,datay,dataz = dataProcessing(data)
-    random = randomData(data)
-    averageDistance = kMeans(dataMatrix,random, numberOfRows,data)
+    dataMatrix, numberOfRows = dataProcessing(data)
+    random = randomData()
+    # averageDistance = kMeans(dataMatrix,random,numberOfRows)
+    kMeans(dataMatrix,random,numberOfRows)
     #plotter(datax,datay,dataz,averageDistance)
-    plotter2(averageDistance,dataMatrix,numberOfRows)
+    #plotter2(averageDistance,dataMatrix,numberOfRows)
 
     #print("Random", random)
     
