@@ -16,4 +16,5 @@ mycursor.execute("SELECT * FROM rawdata where groupid = 73")
 myresult = mycursor.fetchall()
 
 for x in myresult:
-  print(x)
+ print(x)
+  
