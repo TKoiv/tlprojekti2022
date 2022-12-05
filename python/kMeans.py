@@ -27,10 +27,12 @@ def dataProcessing(data):
     dataMatrix[:,1] = datay
     dataMatrix[:,2] = dataz
 
+    position = data.values[0::,9]
+
     randomMax = np.max(data.values[0::,5:7])
     randomMin = np.min(data.values[0::,5:7])
 
-    return dataMatrix,numberOfRows
+    return dataMatrix,numberOfRows,position
 
 def randomData():
 
@@ -38,9 +40,10 @@ def randomData():
 
     return random
 
-def kMeans(dataMatrix,random,numberOfRows):
+def kMeans(dataMatrix,random,numberOfRows,position):
     values = np.zeros(6)
     counts = np.zeros(6)
+    flag = np.zeros(6)
     averageDistance = np.zeros((6,3))
     centerPointCumulativeSum = np.zeros((6,3))
     for i in range(numberOfRows):
@@ -52,13 +55,14 @@ def kMeans(dataMatrix,random,numberOfRows):
         counts[index] += 1
         centerPointCumulativeSum[index,0:3] += dataMatrix[i,0:3]
         print("Arvottu tulos:",counts)
+        flag[index] = position[i]
         
     apu1 = np.min(counts)
     y = 0
 
     if apu1 == 0:
         random = randomData()
-        kMeans(dataMatrix,random,numberOfRows)
+        kMeans(dataMatrix,random,numberOfRows,position)
     elif apu1 != 0:
         for y in range(6):
             averageDistance[y] = (centerPointCumulativeSum[y] / counts[y])
@@ -76,6 +80,7 @@ def kMeans(dataMatrix,random,numberOfRows):
                 break
 
         plotter(averageDistance,dataMatrix,numberOfRows)
+        export(averageDistance,flag)
 
 def iteration(averageDistance,dataMatrix,numberOfRows):
     averageDistance = averageDistance
@@ -116,14 +121,35 @@ def plotter(averageDistance,dataMatrix,numberOfRows):
     
     plt.show()
 
-def export():
-    pass
+def export(averageDistance,flag):
+    i = 0
+    print(averageDistance)
+    print(flag)
+    
+    with open('keskipisteet.h', 'w') as f:
+        line = "float w[6][6] = {"
+        for i in range(5):
+            line = line + "{"
+            outputThis = np.array2string(averageDistance[i,:],precision=3,separator=',')
+            line = line + outputThis[1:len(outputThis)-1]
+            line = line + ","+str(int(flag[i]))
+            line = line + "},"
+        outputThis = np.array2string(averageDistance[5,:],precision=3,separator=',')
+        line = line + "{"
+        line = line + outputThis[1:len(outputThis)-1]
+        line = line + ","+str(int(flag[5]))
+        line = line + "}"
+        line = line + "};"
+        f.write(line)
+        f.write('\n')
+
+    f.close()
 
 if __name__ == "__main__":
     data = dataReading()
-    dataMatrix, numberOfRows = dataProcessing(data)
+    dataMatrix, numberOfRows,position = dataProcessing(data)
     random = randomData()
-    kMeans(dataMatrix,random,numberOfRows)
+    kMeans(dataMatrix,random,numberOfRows,position)
 
 
 
