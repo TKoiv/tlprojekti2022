@@ -1,11 +1,12 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
 
 
 def dataReading():
-    file = "putty.log"
-    data = np.loadtxt(file)
-    print("Data on: ", data)
+
+    file = "file.csv"
+    data = pd.read_csv(file,delimiter=";")
 
     return data
 
@@ -13,42 +14,44 @@ def dataProcessing(data):
 
     global randomMax 
     global randomMin
-    randomMax = np.max(data)
-    randomMin = np.min(data)
 
-    numberOfRows = len(data) / 3
+    numberOfRows = len(data)
     numberOfRows = int(numberOfRows)
     
-
-    datax = data[0::3]
-    datay = data[1::3]
-    dataz = data[2::3]
+    datax = data.values[0::,5]
+    datay = data.values[0::,6]
+    dataz = data.values[0::,7]
 
     dataMatrix = np.zeros((numberOfRows,3))
     dataMatrix[:,0] = datax
     dataMatrix[:,1] = datay
     dataMatrix[:,2] = dataz
 
+    randomMax = np.max(data.values[0::,5:7])
+    randomMin = np.min(data.values[0::,5:7])
+
     return dataMatrix,numberOfRows
 
 def randomData():
-    random = np.random.randint(randomMin,randomMax,size=(4,3))
+
+    random = np.random.randint(randomMin,randomMax,size=(6,3))
 
     return random
 
 def kMeans(dataMatrix,random,numberOfRows):
-    values = np.zeros(4)
-    counts = np.zeros(4)
-    averageDistance = np.zeros((4,3))
-    centerPointCumulativeSum = np.zeros((4,3))
+    values = np.zeros(6)
+    counts = np.zeros(6)
+    averageDistance = np.zeros((6,3))
+    centerPointCumulativeSum = np.zeros((6,3))
     for i in range(numberOfRows):
-        for j in range(4):
+        for j in range(6):
             value1 = np.abs(np.sqrt(np.power((random[j,0]-dataMatrix[i,0]),2) + np.power((random[j,1]-dataMatrix[i,1]),2) + np.power((random[j,2]-dataMatrix[i,2]),2)))
             values[j] = value1
         
         index = np.argmin(values)
         counts[index] += 1
         centerPointCumulativeSum[index,0:3] += dataMatrix[i,0:3]
+        print("Arvottu tulos:",counts)
         
     apu1 = np.min(counts)
     y = 0
@@ -57,34 +60,44 @@ def kMeans(dataMatrix,random,numberOfRows):
         random = randomData()
         kMeans(dataMatrix,random,numberOfRows)
     elif apu1 != 0:
-        for y in range(4):
+        for y in range(6):
             averageDistance[y] = (centerPointCumulativeSum[y] / counts[y])
 
         plotter(averageDistance,dataMatrix,numberOfRows)
-        for k in range(10):
-            iteration(averageDistance,dataMatrix,numberOfRows)
-            k += 1
-            print("iteration", k)
+        iter = iteration(averageDistance,dataMatrix,numberOfRows)
+        
+        
+        while True:
+            print("Iteroitu tulos: ", iter)
+            iter2 = iter
+            iter = iteration(averageDistance,dataMatrix,numberOfRows)
+            print("Iteroitu tulos: ", iter)
+            if (iter2 == iter).all():
+                break
+
         plotter(averageDistance,dataMatrix,numberOfRows)
+
 def iteration(averageDistance,dataMatrix,numberOfRows):
     averageDistance = averageDistance
     dataMatrix = dataMatrix
     numberOfRows = numberOfRows
-    values = np.zeros(4)
-    counts = np.zeros(4)
-    centerPointCumulativeSum = np.zeros((4,3))
+    values = np.zeros(6)
+    counts = np.zeros(6)
+    centerPointCumulativeSum = np.zeros((6,3))
     for i in range(numberOfRows):
-        for j in range(4):
+        for j in range(6):
             value1 = np.abs(np.sqrt(np.power((averageDistance[j,0]-dataMatrix[i,0]),2) + np.power((averageDistance[j,1]-dataMatrix[i,1]),2) + np.power((averageDistance[j,2]-dataMatrix[i,2]),2)))
             values[j] = value1
         
         index = np.argmin(values)
         counts[index] += 1
         centerPointCumulativeSum[index,0:3] += dataMatrix[i,0:3]
+   
     y = 0  
-    for y in range(4):
+    for y in range(6):
         averageDistance[y] = (centerPointCumulativeSum[y] / counts[y])
-    
+
+    return counts
 
 def plotter(averageDistance,dataMatrix,numberOfRows):
     
@@ -94,7 +107,7 @@ def plotter(averageDistance,dataMatrix,numberOfRows):
     i = 0
     for x in range(numberOfRows):
         ax.scatter(dataMatrix[x,0],dataMatrix[x,1], dataMatrix[x,2], color="blue")
-    for i in range(4):
+    for i in range(6):
         ax.scatter(averageDistance[i,0],averageDistance[i,1], averageDistance[i,2], marker="*",s=200)
 
     ax.set_xlabel('X Label')
