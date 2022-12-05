@@ -9,4 +9,8 @@
 ![kMeans6_arvottu](https://user-images.githubusercontent.com/93557178/205661188-0e8c70c1-c5c7-4e01-ab23-3cb629390201.png)
 ![kMeans6_iteroitu](https://user-images.githubusercontent.com/93557178/205661243-d2391e5d-0a9d-4f7a-9998-90a67437cb40.png)
 
+## Confusion matrixin tulos
+![image](https://user-images.githubusercontent.com/93557178/205662199-49153a89-52ea-431f-b92a-ac5ab023c72c.png)
+
+
 
