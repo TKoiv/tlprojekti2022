@@ -116,6 +116,9 @@ def plotter(averageDistance,dataMatrix,numberOfRows):
     
     plt.show()
 
+def export():
+    pass
+
 if __name__ == "__main__":
     data = dataReading()
     dataMatrix, numberOfRows = dataProcessing(data)
