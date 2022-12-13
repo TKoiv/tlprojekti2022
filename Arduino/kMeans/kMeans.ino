@@ -73,7 +73,6 @@ void loop()
   int j = 0;
   float minvalue = 500;
   int paikka = 0;
-  //float values[6][6]
   for (int M = 0; M < NumberOfMeasurements;)
   {
     Aobject.makeMeasurement();
