@@ -22,7 +22,7 @@ Projektissa oli käytössä ohjelmointikielinä Python ja C++ Mikrokontrollerina
 
 ## Lopputulos
 
-Mitatun datan siirto onnistui radio-rajapinnan yli tietokantaan. Tästä datasta K-means algoritmilla tehty malli implementoitiin Arduinoon, joka osa-si onnistuneesti luokitella anturidatan perusteella asennot oikein.​
+Mitatun datan siirto onnistui radio-rajapinnan yli tietokantaan. Tästä datasta K-means algoritmilla tehty malli implementoitiin Arduinoon, joka osasi onnistuneesti luokitella anturidatan perusteella asennot oikein.​
 
 ## Johtopäätökset
 
