@@ -10,7 +10,7 @@
 ![kMeans6_iteroitu](https://user-images.githubusercontent.com/93557178/205661243-d2391e5d-0a9d-4f7a-9998-90a67437cb40.png)
 
 ## Confusion matrixin tulos
-![image](https://user-images.githubusercontent.com/93557178/205662199-49153a89-52ea-431f-b92a-ac5ab023c72c.png)
+![image](https://user-images.githubusercontent.com/93557178/207534017-e5046e42-c242-4fb4-b329-62eecdb4fa36.png)
 
 
 
