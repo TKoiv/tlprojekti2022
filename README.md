@@ -26,7 +26,7 @@ Mitatun datan siirto onnistui radio-rajapinnan yli tietokantaan. Tästä datasta
 
 ## Johtopäätökset
 
-Projekti oli haastava, mutta opettava, koska K-Means –algoritmi tehtiin itse alusta alkaen. Ennen projektia opiskeltu teoreettinen osaaminen vahvistui projektin aikana käytännön osaamisella, ja ymmärrys koneoppimisesta syventyi.​
+Projekti oli haastava, mutta opettavainen, koska K-Means –algoritmi tehtiin itse alusta alkaen. Ennen projektia opiskeltu teoreettinen osaaminen vahvistui projektin aikana käytännön osaamisella, ja ymmärrys koneoppimisesta syventyi.​
 
 
 
